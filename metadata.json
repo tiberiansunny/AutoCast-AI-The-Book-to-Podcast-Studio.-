@@ -1,0 +1,5 @@
+{
+  "name": "AutoCast AI",
+  "description": "AutoCast AI: The Book-to-Podcast Studio. Transform text and books into professional, multi-speaker audio podcasts and videos using Google Gemini 2.5 Flash, Web Audio API, and Real-time Rendering.",
+  "requestFramePermissions": []
+}
