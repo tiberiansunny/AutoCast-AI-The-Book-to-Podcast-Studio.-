@@ -12,6 +12,7 @@ export enum ProcessingStatus {
 }
 
 export type VideoCodec = 'vp9' | 'h264' | 'av1';
+export type AppMode = 'BOOK' | 'DISCUSSION';
 
 export interface CtaFile {
   id: string;
@@ -33,17 +34,32 @@ export interface BookInput {
   id: string;
   title: string;
   durationMinutes: number;
-  voiceProfileId: string; // changed from voiceName to link to VoiceProfile
+  voiceProfileId: string; 
   emotion: string;
   speed: string;
-  ctaId: string | null; // ID of the uploaded CTA file
+  ctaId: string | null; 
   videoImage: File | null;
   renderWaveform: boolean;
-  videoCodec: VideoCodec; // New field
+  videoCodec: VideoCodec;
+}
+
+export interface DiscussionInput {
+  id: string;
+  topic: string; // The user input for discussion
+  durationMinutes: number;
+  hostVoiceId: string;
+  guestVoiceIds: string[]; // Multiple guests
+  interactionWeight: number; // 1-10 scale for naturalness
+  rules: string;
+  ctaId: string | null;
+  videoImage: File | null;
+  renderWaveform: boolean;
+  videoCodec: VideoCodec;
 }
 
 export interface GeneratedSeo {
   title: string;
+  abTitles?: string[]; // A/B Test titles
   description: string;
   tags: string[];
 }
@@ -62,13 +78,17 @@ export interface BookResult {
   seo: GeneratedSeo | null;
   logs: string[];
   status: ProcessingStatus;
-  progress?: ProcessingProgress; // Added progress tracking
+  progress?: ProcessingProgress; 
   errorMessage?: string;
   completedAt?: Date;
 }
 
 // Combined type for state management
 export interface BookEntry extends BookInput {
+  result: BookResult;
+}
+
+export interface DiscussionEntry extends DiscussionInput {
   result: BookResult;
 }
 

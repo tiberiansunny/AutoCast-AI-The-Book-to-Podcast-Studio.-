@@ -21,6 +21,25 @@ Create a short description of the book with few paragraphs.
 Continue with the spoken phrase: "Chapter [number]" followed by the chapter's main ideas. You must pronounce the Chapter number (e.g. "Chapter One", "Chapter Two") sequentially for each chapter.
 Finish with the spoken phrase: "Final Summary." and final summary of this book`;
 
+export const DEFAULT_DISCUSSION_PROMPT = `Role: You are an expert Podcast Producer and Scriptwriter.
+Task: Create a natural, engaging, and informative podcast discussion script between a Host and Guest(s) based on a specific topic.
+Constraints:
+1. Natural Dialogue: Use conversational fillers, interruptions, and natural flow appropriate for a podcast.
+2. Informative: Ensure the core facts and nuances of the topic are covered deeply.
+3. Structure: 
+   - Intro (Host sets the stage)
+   - Deep Dive (Discussion with Guests)
+   - Conclusion (Key takeaways)`;
+
+export const DEFAULT_DISCUSSION_RULES = `Format the script exactly like this using the speaker's name in brackets:
+[Host Name]: <Text>
+[Guest Name]: <Text>
+
+1. Host starts with a catchy intro about the topic.
+2. Host introduces the Guest(s) by name.
+3. Discussion moves back and forth naturally.
+4. Host wraps up with a conclusion.`;
+
 export const DEFAULT_DESCRIPTION_TAIL = `___
 
 Support this Channel ko-fi.com/bonaideapro or https://send.monobank.ua/jar/6iPbbAAWwe
@@ -35,13 +54,42 @@ PC for Video Editing https://amzn.to/3rramPO
 
 ___
 
-PS: This book summary is meant as a preview and not a replacement for the original work. If you like this summary please consider purchasing the original book to get the full experience as the original author intended it to be. If you are the original author and want us to remove it, please contact us.`;
+PS: This content is meant as a preview/analysis. If you like this subject please consider supporting original sources.`;
 
 export const WEIGHTS = {
   SEARCH: 5,
   SCRIPT: 5,
   AUDIO: 80,
   MIX: 10
+};
+
+/**
+ * Generates specific system instructions based on the Interaction Weight (1-10)
+ */
+export const GET_INTERACTION_PROMPT = (weight: number) => {
+    if (weight <= 3) {
+        return `INTERACTION LEVEL ${weight} (STRICT/FORMAL):
+        - Speakers MUST NOT interrupt each other.
+        - Use complete, grammatically correct sentences.
+        - No filler words (um, uh, like).
+        - Tone should be professional, academic, or journalistic.
+        - Strict "ping-pong" turn-taking. One speaker finishes, the next begins.`;
+    } else if (weight <= 7) {
+        return `INTERACTION LEVEL ${weight} (BALANCED/CASUAL):
+        - Tone should be friendly and conversational but clear.
+        - Occasional natural phrasing (e.g., "That's a good point," "Exactly").
+        - Flow should be smooth but easy to follow.
+        - Moderate energy level.`;
+    } else {
+        return `INTERACTION LEVEL ${weight} (HYPER-REALISTIC/NOTEBOOKLM STYLE):
+        - CRITICAL: Mimic a real, high-energy podcast between friends.
+        - FREQUENTLY use back-channeling (e.g., "Mhm," "Yeah," "Right," "Whoa").
+        - Use conversational fillers naturally (e.g., "I mean," "You know," "Sort of").
+        - Speakers should start sentences with "And...", "But...", "So...".
+        - Include short interjections where one speaker agrees while the other is talking (e.g. [Guest]: "It was huge." [Host]: "Massive." [Guest]: "Exactly, massive.").
+        - Sentences can be short or run-on, mimicking real thought processes.
+        - High dynamic range in emotion.`;
+    }
 };
 
 export const EMOTIONS = ['Neutral', 'Enthusiastic', 'Serious', 'Storyteller', 'Soothing', 'Curious', 'Authoritative'];
